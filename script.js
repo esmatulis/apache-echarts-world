@@ -13,19 +13,173 @@ $.get('world.json', function (usaJson) {
   myChart.hideLoading();
   echarts.registerMap('USA', usaJson);
   var data = [
-                {name: 'China', value: [104.195397, 35.86166], population: 1444216107},
-                {name: 'India', value: [78.96288, 20.593684], population: 1393409038},
-                {name: 'United States', value: [-98.5795, 39.8283], population: 331002651},
-                {name: 'Indonesia', value: [113.9213, -0.7893], population: 273523615},
-                {name: 'Pakistan', value: [69.3451, 30.3753], population: 200},
-                {name: 'Brazil', value: [-51.9253, -14.2350], population: 212559417},
-                // Add more countries as necessary
-            ];
+    {
+        rcode: 1,
+        pcode: 1,
+        resp_id: 1,
+        next_latitude: 78,
+        longitude: 20,
+        country: 'Brazil',
+        city: 'Sao Paulo',
+        latitude: 104,
+        longitude: 35,
+        velocity: 1000,
+        surveyresponsegeo_id: 1,
+        next_surveyresponsegeo_id: 2
+    },
+    {
+        rcode: 1,
+        pcode: 1,
+        resp_id: 1,
+        next_latitude: 78,
+        longitude: 20,
+        country: 'Colombia',
+        city: 'Bogota',
+        latitude: 78,
+        longitude: 20,
+        velocity: 0,
+        surveyresponsegeo_id: 2,
+        next_surveyresponsegeo_id: 3
+    },
+    {
+        rcode: 1,
+        pcode: 1,
+        resp_id: 1,
+        next_latitude: 78,
+        longitude: 20,
+        country: 'Colombia',
+        city: 'Bogota',
+        latitude: 78,
+        longitude: 20,
+        velocity: 0,
+        surveyresponsegeo_id: 3,
+        next_surveyresponsegeo_id: 4
+    },
+    {
+        rcode: 1,
+        pcode: 1,
+        resp_id: 1,
+        next_latitude: -51,
+        longitude: -14,
+        country: 'Colombia',
+        city: 'Bogota',
+        latitude: 78,
+        longitude: 20,
+        velocity: null,
+        surveyresponsegeo_id: 4,
+        next_surveyresponsegeo_id: null
+    },
+    {
+        rcode: 2,
+        pcode: 2,
+        resp_id: 2,
+        next_latitude: -51,
+        longitude: -14,
+        country: 'China',
+        city: 'Hong Kong',
+        latitude: -51,
+        longitude: -14,
+        velocity: 0,
+        surveyresponsegeo_id: 5,
+        next_surveyresponsegeo_id: 6
+    },
+    {
+        rcode: 2,
+        pcode: 2,
+        resp_id: 2,
+        next_latitude: -51,
+        longitude: -14,
+        country: 'China',
+        city: 'Hong Kong',
+        latitude: -51,
+        longitude: -14,
+        velocity: 0,
+        surveyresponsegeo_id: 6,
+        next_surveyresponsegeo_id: 7
+    },
+    {
+        rcode: 2,
+        pcode: 2,
+        resp_id: 2,
+        next_latitude: 113,
+        longitude: 0,
+        country: 'China',
+        city: 'Hong Kong',
+        latitude: -51,
+        longitude: -14,
+        velocity: null,
+        surveyresponsegeo_id: 7,
+        next_surveyresponsegeo_id: null
+    },
+    {
+        rcode: 3,
+        pcode: 3,
+        resp_id: 3,
+        next_latitude: 200,
+        longitude: 0,
+        country: 'United States',
+        city: 'Boston',
+        latitude: 113,
+        longitude: 0,
+        velocity: null,
+        surveyresponsegeo_id: 8,
+        next_surveyresponsegeo_id: null
+    },
+    {
+        rcode: 4,
+        pcode: 4,
+        resp_id: 4,
+        next_latitude: -98,
+        longitude: 39,
+        country: 'United States',
+        city: 'Washington',
+        latitude: 200,
+        longitude: 0,
+        velocity: 100,
+        surveyresponsegeo_id: 9,
+        next_surveyresponsegeo_id: 10
+    },
+    {
+        rcode: 4,
+        pcode: 4,
+        resp_id: 4,
+        next_latitude: null,
+        longitude: null,
+        country: 'Italy',
+        city: 'Venice',
+        latitude: -98,
+        longitude: 39,
+        velocity: null,
+        surveyresponsegeo_id: 10,
+        next_surveyresponsegeo_id: null
+    }
+];
 var lines = [
-                {from: 'China', to: 'India'},
-                {from: 'India', to: 'United States'},
-                {from: 'Brazil', to: 'United States'}
-            ];
+    {
+        from: 1,
+        to: 2
+    },
+    {
+        from: 2,
+        to: 3
+    },
+    {
+        from: 3,
+        to: 4
+    },
+    {
+        from: 5,
+        to: 6
+    },
+    {
+        from: 6,
+        to: 7
+    },
+    {
+        from: 9,
+        to: 10
+    }
+];
             
              // Map to store coordinates by country name for line connections
             var coordinatesMap = {};
@@ -34,33 +188,55 @@ var lines = [
             });
 
             // Create line series from the `lines` array
-             var lineData = lines.map(line => {
-                var fromCoords = coordinatesMap[line.from];
-                var toCoords = coordinatesMap[line.to];
-
-                // Only include lines if both the 'from' and 'to' countries have valid coordinates
-                if (fromCoords && toCoords) {
-                    return {
-                        coords: [fromCoords, toCoords],
-    from: line.from,
-    to: line.to
-
-                    };
-                } else {
-                    return null; // Return null if any coordinates are missing
+             var lineData = [
+                {
+                    from: "Brazil",
+                    to: "Colombia",
+                    coords: [[104,35],[78,20]]
+                },
+                {
+                    from: "Colombia",
+                    to: "Colombia",
+                    coords: [[78,20],[78,20]]
+                },
+                {
+                    from: "Colombia",
+                    to: "Colombia",
+                    coords: [[78,20],[78,20]]
+                },
+                {
+                    from: "China",
+                    to: "China",
+                    coords: [[-51,-14],[-51,-14]]
+                },
+                {
+                    from: "China",
+                    to: "China",
+                    coords: [[-51,-14],[-51,-14]]
+                },
+                {
+                    from: "United States",
+                    to: "Italy",
+                    coords: [[200,0],[-98,39]]
                 }
-            }).filter(item => item !== null);
+            ];
             // Calculate size based on population
             function getDotSize(population) {
-                return Math.log(population) * 2; // Scale the size for better visual clarity
+                return population*10; // Scale the size for better visual clarity
             }
 
             // Calculate color based on population
-            function getColor(population) {
-                if (population > 1000000000) return '#ff0000'; // High population (red)
-                if (population > 500000000) return '#ff9900'; // Medium population (orange)
-                return '#33cc33'; // Low population (green)
+            function getGradientColor(population, minPop, maxPop) {
+                // Create a color scale from green to red based on population
+                var ratio = (population - minPop) / (maxPop - minPop);
+                var red = Math.floor(ratio * 122); // red value varies with population
+                var green = 255 - red; // green value is inversely proportional to population
+                return `rgb(${red}, ${green}, 0)`; // Create RGB color
             }
+
+            // Get the minimum and maximum population values for the gradient
+            var minPop = Math.min(...data.map(d => d.resp_id));
+            var maxPop = Math.max(...data.map(d => d.resp_id));
             
   option = {
     title: {
@@ -93,18 +269,20 @@ var lines = [
                     coordinateSystem: 'geo',
                     data: data.map(function(item) {
                         return {
-                            name: item.name,
-                            value: item.value.concat(item.population),
-                            symbolSize: getDotSize(item.population),
+                            name: item.country,
+                            value: [item.latitude, item.longitude, item.resp_id],
+                            symbolSize: getDotSize(item.resp_id),
                             itemStyle: {
-                                color: getColor(item.population)
+                                color: getGradientColor(item.resp_id, minPop, maxPop)
                             }
+                            
                         };
                     }),
                     tooltip: {
                         trigger: 'item',
                         formatter: function(params) {
-                            return params.name + '<br>Population: ' + params.value[2];
+                            console.log(params);
+                            return params.name + '<br>Respondent: ' + params.value[2];
                         }
                     }
                 },
