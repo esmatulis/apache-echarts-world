@@ -193,37 +193,37 @@ var lines = [
                     from: "Brazil",
                     to: "Colombia",
                     coords: [[104,35],[78,20]],
-                    isSuspicious: false
+                    lineWidth: 2
                 },
                 {resp_id:1, 
                     from: "Colombia",
                     to: "Colombia",
                     coords: [[78,20],[78,20]],
-                    isSuspicious: false
+                    lineWidth: 2
                 },
                 {resp_id:1, 
                     from: "Colombia",
                     to: "Colombia",
                     coords: [[78,20],[78,20]],
-                    isSuspicious: false
+                    lineWidth: 2
                 },
                 {resp_id:2, 
                     from: "China",
                     to: "China",
                     coords: [[-51,-14],[-51,-14]],
-                    isSuspicious: false
+                    lineWidth: 2
                 },
                 {resp_id:2,
                     from: "China",
                     to: "China",
                     coords: [[-51,-14],[-51,-14]],
-                    isSuspicious: false
+                    lineWidth: 2
                 },
                 {resp_id:4,
                     from: "United States",
                     to: "Italy",
                     coords: [[200,0],[-98,39]],
-                    isSuspicious: true
+                    lineWidth: 4
                 }
             ];
             // Calculate size based on population
@@ -277,9 +277,11 @@ var lines = [
                         }
                     },
                     itemStyle: {
-                        areaColor: '#e0e0e0',
-                        borderColor: '#111'
+                        areaColor: '#FFF',
+                        borderColor: '#444',
+                        borderWidth: 0.5
                     },
+                    silent: true,
                 },
                 series: [{
                     type: 'scatter',
@@ -291,6 +293,7 @@ var lines = [
                             symbolSize: getDotSize(item.resp_id),
                             itemStyle: {
                                 color: getGradientColor(item.resp_id, minPop, maxPop)
+                            , opacity: 0.5
                             }
                             
                         };
@@ -298,7 +301,7 @@ var lines = [
                     tooltip: {
                         trigger: 'item',
                         formatter: function(params) {
-                            return params.name + '<br><b>Respondent</b>: ' + params.value[2];
+                            return params.name + '<br><b><span style="color: #0064ff">Respondent</span></b>: ' + params.value[2];
                         }
                     }
                 },
@@ -313,9 +316,9 @@ var lines = [
                                 return getGradientColor(params.data.resp_id, minPop, maxPop)
                                  // Use dynamic line color based on the source country's population
                             },  // Set color of the lines
-                            width: getLineSize(false)
+                            width: 2
                             ,
-                            opacity: 0.7,
+                            opacity: 0.5,
                             curveness: 0.3  // Curve the lines
                         },
                         tooltip: {
@@ -324,6 +327,16 @@ var lines = [
                                 var fromCountry = params.data.from;
                                 var toCountry = params.data.to;
                                 return fromCountry + '  → ' + toCountry + ' ' + params.data.isSuspicious;
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: function (params) {
+                                    return params.data.lineColor; // Use dynamic line color based on the source country's population
+                                },
+                                width: function (params) {
+                                    return params.data.lineWidth; // Dynamic line width based on suspicious flag
+                                }
                             }
                         }
                     }],
