@@ -1,0 +1,52 @@
+[
+    {
+        from: "Brazil",
+        to: "Colombia",
+        coords: [[104,35],[78,20]]
+    },
+    {
+        from: "Colombia",
+        to: "Colombia",
+        coords: [[78,20],[78,20]]
+    },
+    {
+        from: "Colombia",
+        to: "Colombia",
+        coords: [[78,20],[78,20]]
+    },
+    {
+        from: "Colombia",
+        to: "",
+        coords: ""
+    },
+    {
+        from: "China",
+        to: "China",
+        coords: [[-51,-14],[-51,-14]]
+    },
+    {
+        from: "China",
+        to: "China",
+        coords: [[-51,-14],[-51,-14]]
+    },
+    {
+        from: "China",
+        to: "",
+        coords: ""
+    },
+    {
+        from: "United States",
+        to: "",
+        coords: ""
+    },
+    {
+        from: "United States",
+        to: "Italy",
+        coords: [[200,0],[-98,39]]
+    },
+    {
+        from: "Italy",
+        to: "",
+        coords: ""
+    }
+]

@@ -189,49 +189,66 @@ var lines = [
 
             // Create line series from the `lines` array
              var lineData = [
-                {
+                {resp_id:1, 
                     from: "Brazil",
                     to: "Colombia",
-                    coords: [[104,35],[78,20]]
+                    coords: [[104,35],[78,20]],
+                    isSuspicious: false
                 },
-                {
+                {resp_id:1, 
                     from: "Colombia",
                     to: "Colombia",
-                    coords: [[78,20],[78,20]]
+                    coords: [[78,20],[78,20]],
+                    isSuspicious: false
                 },
-                {
+                {resp_id:1, 
                     from: "Colombia",
                     to: "Colombia",
-                    coords: [[78,20],[78,20]]
+                    coords: [[78,20],[78,20]],
+                    isSuspicious: false
                 },
-                {
+                {resp_id:2, 
                     from: "China",
                     to: "China",
-                    coords: [[-51,-14],[-51,-14]]
+                    coords: [[-51,-14],[-51,-14]],
+                    isSuspicious: false
                 },
-                {
+                {resp_id:2,
                     from: "China",
                     to: "China",
-                    coords: [[-51,-14],[-51,-14]]
+                    coords: [[-51,-14],[-51,-14]],
+                    isSuspicious: false
                 },
-                {
+                {resp_id:4,
                     from: "United States",
                     to: "Italy",
-                    coords: [[200,0],[-98,39]]
+                    coords: [[200,0],[-98,39]],
+                    isSuspicious: true
                 }
             ];
             // Calculate size based on population
             function getDotSize(population) {
                 return population*10; // Scale the size for better visual clarity
             }
+            // Calculate size based on population
+            function getLineSize(isSuspicious) {
+                if (isSuspicious) {
+                    return 5
+                }
+                return 1 // Scale the size for better visual clarity
+            }
 
             // Calculate color based on population
             function getGradientColor(population, minPop, maxPop) {
-                // Create a color scale from green to red based on population
                 var ratio = (population - minPop) / (maxPop - minPop);
-                var red = Math.floor(ratio * 122); // red value varies with population
-                var green = 255 - red; // green value is inversely proportional to population
-                return `rgb(${red}, ${green}, 0)`; // Create RGB color
+                
+                // Calculate RGB values for gradient from fuchsia to blue
+                var red = Math.floor(255 - (ratio * 255)); // Red decreases as we move from fuchsia to blue
+                var green = 0; // Green remains constant (no green in either color)
+                var blue = Math.floor(ratio * 255); // Blue increases as we move from fuchsia to blue
+
+                return `rgb(${red}, ${green}, ${blue})`; // Return RGB value (gradient between fuchsia and blue)
+ 
             }
 
             // Get the minimum and maximum population values for the gradient
@@ -281,8 +298,7 @@ var lines = [
                     tooltip: {
                         trigger: 'item',
                         formatter: function(params) {
-                            console.log(params);
-                            return params.name + '<br>Respondent: ' + params.value[2];
+                            return params.name + '<br><b>Respondent</b>: ' + params.value[2];
                         }
                     }
                 },
@@ -293,8 +309,12 @@ var lines = [
                         coordinateSystem: 'geo',
                         data: lineData,
                         lineStyle: {
-                            color: '#ff7f50',  // Set color of the lines
-                            width: 5,
+                            color: function (params) {
+                                return getGradientColor(params.data.resp_id, minPop, maxPop)
+                                 // Use dynamic line color based on the source country's population
+                            },  // Set color of the lines
+                            width: getLineSize(false)
+                            ,
                             opacity: 0.7,
                             curveness: 0.3  // Curve the lines
                         },
@@ -303,7 +323,7 @@ var lines = [
                             formatter: function(params) {
                                 var fromCountry = params.data.from;
                                 var toCountry = params.data.to;
-                                return fromCountry + '  → ' + toCountry;
+                                return fromCountry + '  → ' + toCountry + ' ' + params.data.isSuspicious;
                             }
                         }
                     }],
